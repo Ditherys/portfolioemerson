@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supply Chain S&OP Dashboard | Dither Reyes Global Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="icon" type="image/png" href="./drlogo_favicon.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="app-shell">
+      <!-- ── Sidebar ── -->
+      <aside class="sidebar">
+        <section class="brand-panel">
+          <div class="brand-logo-wrap">
+            <img src="./drlogo2.png" alt="Dither Reyes Global Solutions" class="brand-logo" />
+          </div>
+          <a href="https://www.linkedin.com/in/dither-reyes-543273381/" target="_blank" rel="noopener" class="linkedin-link">
+            <img src="./LinkedIn_logo_initials.png" alt="LinkedIn" />
+            Connect on LinkedIn
+          </a>
+        </section>
+
+        <section class="sidebar-panel disclaimer-panel">
+          <p class="panel-label">Data Disclaimer</p>
+          <p class="disclaimer-text">
+            All data in this dashboard is <strong>entirely fictional</strong> and was created
+            solely to demonstrate supply chain analytics and S&amp;OP dashboarding skills.
+            It is inspired by real operational experience in high-volume retail inventory
+            management. No real company, product, or business data was used.
+          </p>
+        </section>
+
+        <section class="sidebar-panel">
+          <p class="panel-label">KPI Targets</p>
+          <div class="legend-pills">
+            <div class="legend-pill pill-success">At / Above Target</div>
+            <div class="legend-pill pill-warning">Within 5% of Target</div>
+            <div class="legend-pill pill-danger">Below Target</div>
+          </div>
+          <div class="target-list">
+            <div class="target-row"><span>Forecast Accuracy</span><strong>≥ 85%</strong></div>
+            <div class="target-row"><span>Days of Supply</span><strong>≤ 45 days</strong></div>
+            <div class="target-row"><span>On-Time Delivery</span><strong>≥ 95%</strong></div>
+            <div class="target-row"><span>Fill Rate</span><strong>≥ 95%</strong></div>
+            <div class="target-row"><span>Inv. Turnover</span><strong>≥ 6.0×</strong></div>
+          </div>
+        </section>
+
+        <section class="sidebar-panel">
+          <p class="panel-label">Data Period</p>
+          <h3 class="sidebar-heading">Jan – Dec 2024</h3>
+          <p class="sidebar-note">12-month S&OP cycle · 4 product families · Top 30 SKUs tracked</p>
+        </section>
+      </aside>
+
+      <!-- ── Main Content ── -->
+      <main class="main-content" id="main-content">
+
+        <!-- Header -->
+        <header class="page-header">
+          <div class="header-brand-shell">
+            <div class="header-logo-slot">
+              <img src="./drlogo2.png" alt="DRGS" class="header-logo" />
+            </div>
+            <div class="header-copy">
+              <span class="header-kicker">Supply Chain Analytics · Portfolio Demo</span>
+              <h1>S&amp;OP Performance Dashboard</h1>
+              <p class="header-sub">FY 2024 · Simulated Dataset — Metro Brew F&amp;B Corp. · Dither Reyes Global Solutions</p>
+              <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
+                <button class="tab-btn is-active" data-tab="overview"   role="tab" aria-selected="true"  type="button">Overview</button>
+                <button class="tab-btn"           data-tab="inventory"  role="tab" aria-selected="false" type="button">Inventory</button>
+                <button class="tab-btn"           data-tab="forecast"   role="tab" aria-selected="false" type="button">Forecast</button>
+                <button class="tab-btn"           data-tab="sop"        role="tab" aria-selected="false" type="button">S&amp;OP</button>
+                <button class="tab-btn"           data-tab="shipments"  role="tab" aria-selected="false" type="button">Shipments</button>
+              </nav>
+            </div>
+          </div>
+          <div class="header-meta">
+            <div class="meta-chip"><span class="meta-label">Period</span><strong>Jan–Dec 2024</strong></div>
+            <div class="meta-chip"><span class="meta-label">Product Lines</span><strong>4 Families</strong></div>
+            <div class="meta-chip"><span class="meta-label">Top 30 SKUs</span><strong>Monitored</strong></div>
+          </div>
+        </header>
+
+        <!-- KPI Cards -->
+        <section class="kpi-grid" id="kpiGrid" aria-label="Key performance indicators"></section>
+
+        <!-- ══ OVERVIEW TAB ══ -->
+        <div class="tab-pane is-active" id="tab-overview" role="tabpanel">
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Trend View</p>
+                  <h3>Forecast Accuracy Trend — All Families</h3>
+                  <p class="chart-note">Monthly FA (%) by product family vs. 85% target · Jan–Dec 2024</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="faOverviewChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Supply Plan</p>
+                  <h3>Demand vs. Supply Plan</h3>
+                  <p class="chart-note">Monthly demand plan vs. actual shipments (units '000s)</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="demandActualChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Delivery</p>
+                  <h3>On-Time Delivery &amp; Fill Rate</h3>
+                  <p class="chart-note">Monthly OTD and fill rate (%) vs. 95% target</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="otdFillChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">S&amp;OP Scorecard</p>
+                  <h3>Monthly S&amp;OP Performance Heatmap</h3>
+                  <p class="chart-note">Green = at/above target · Yellow = within 5% of target · Red = below target</p>
+                </div>
+              </div>
+              <div id="sopHeatmap" class="heatmap-surface"></div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ INVENTORY TAB ══ -->
+        <div class="tab-pane hidden" id="tab-inventory" role="tabpanel">
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Days of Supply</p>
+                  <h3>DOS Trend by Product Family</h3>
+                  <p class="chart-note">Monthly days of supply per family — target ≤ 45 days</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="dosChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Inventory Value</p>
+                  <h3>Inventory Value by Family ($M)</h3>
+                  <p class="chart-note">Monthly inventory value stacked by product family</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="invValueChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Top 30 Inventory Report</p>
+                  <h3>Top 30 SKUs by Inventory Value at Risk</h3>
+                  <p class="chart-note">Ranked by value on-hand · flagged by days-of-supply risk threshold</p>
+                </div>
+                <button class="export-btn" id="exportTop30" type="button">Export CSV</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table" id="top30Table">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>SKU</th>
+                      <th>Description</th>
+                      <th>Family</th>
+                      <th>DOS (days)</th>
+                      <th>Inv. Value</th>
+                      <th>Units OH</th>
+                      <th>Status</th>
+                      <th>Recommended Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="top30Body"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ FORECAST TAB ══ -->
+        <div class="tab-pane hidden" id="tab-forecast" role="tabpanel">
+          <section class="kpi-grid" id="forecastKpiGrid" aria-label="Forecast accuracy KPIs"></section>
+
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Trend</p>
+                  <h3>Forecast Accuracy by Family</h3>
+                  <p class="chart-note">Monthly FA (%) per product family — target: 85%</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="faFamilyChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Current Month</p>
+                  <h3>December FA vs. Target</h3>
+                  <p class="chart-note">December 2024 forecast accuracy vs. 85% target per family</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="faCurrentChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Miss Analysis</p>
+                  <h3>Top Forecast Misses — FY 2024</h3>
+                  <p class="chart-note">Largest forecast variances requiring root cause analysis and corrective action</p>
+                </div>
+                <button class="export-btn" id="exportMisses" type="button">Export CSV</button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table" id="forecastMissTable">
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Description</th>
+                      <th>Family</th>
+                      <th>Month</th>
+                      <th>Plan (units)</th>
+                      <th>Actual (units)</th>
+                      <th>Variance %</th>
+                      <th>Root Cause</th>
+                    </tr>
+                  </thead>
+                  <tbody id="forecastMissBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ S&OP TAB ══ -->
+        <div class="tab-pane hidden" id="tab-sop" role="tabpanel">
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Supply &amp; Demand Alignment</p>
+                  <h3>Demand Plan vs. Actual Shipments</h3>
+                  <p class="chart-note">Monthly plan vs. actual (units '000s) with variance % overlay</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="sopDemandChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Inventory Health</p>
+                  <h3>Overall DOS Trend</h3>
+                  <p class="chart-note">Composite days of supply vs. 45-day target — downward = improvement</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="sopDosChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Turnover Rate</p>
+                  <h3>Inventory Turnover by Family</h3>
+                  <p class="chart-note">Annualized turnover rate per family — target: ≥ 6.0×</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="turnoverChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row">
+            <article class="chart-card card-full">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">S&amp;OP Scorecard</p>
+                  <h3>Full-Year S&amp;OP Performance Scorecard</h3>
+                  <p class="chart-note">Green = at/above target · Yellow = within 5% · Red = below target</p>
+                </div>
+              </div>
+              <div id="sopHeatmapFull" class="heatmap-surface"></div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ SHIPMENTS TAB ══ -->
+        <div class="tab-pane hidden" id="tab-shipments" role="tabpanel">
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Delivery Performance</p>
+                  <h3>On-Time Delivery Trend</h3>
+                  <p class="chart-note">Monthly OTD (%) vs. 95% target</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="otdChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Order Fill</p>
+                  <h3>Fill Rate Trend</h3>
+                  <p class="chart-note">Monthly fill rate (%) vs. 95% target</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="fillRateChart"></canvas></div>
+            </article>
+          </div>
+
+          <div class="chart-row chart-row-2">
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Open Orders</p>
+                  <h3>Open Orders Volume Trend</h3>
+                  <p class="chart-note">Monthly open order count — declining trend = healthier pipeline</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="openOrdersChart"></canvas></div>
+            </article>
+
+            <article class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">Current Month · Dec 2024</p>
+                  <h3>Shipment Status Breakdown</h3>
+                  <p class="chart-note">On-time, early, and late shipments for December 2024</p>
+                </div>
+              </div>
+              <div class="chart-wrap"><canvas id="shipmentStatusChart"></canvas></div>
+            </article>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Sticky tab bar -->
+    <nav id="stickyTabBar" class="sticky-tab-bar hidden" aria-label="Quick navigation">
+      <div class="sticky-inner">
+        <span class="sticky-brand">DRGS · Supply Chain</span>
+        <div class="sticky-tabs">
+          <button class="sticky-tab is-active" data-sticky-tab="overview"  type="button">Overview</button>
+          <button class="sticky-tab"           data-sticky-tab="inventory" type="button">Inventory</button>
+          <button class="sticky-tab"           data-sticky-tab="forecast"  type="button">Forecast</button>
+          <button class="sticky-tab"           data-sticky-tab="sop"       type="button">S&amp;OP</button>
+          <button class="sticky-tab"           data-sticky-tab="shipments" type="button">Shipments</button>
+        </div>
+      </div>
+    </nav>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
