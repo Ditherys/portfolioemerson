@@ -330,11 +330,24 @@ function renderKpiCards() {
           <span class="kpi-delta ${deltaClass}">${c.text}</span>
         </div>
         <div class="kpi-bar-track">
-          <div class="kpi-bar-fill ${barClass}" style="width:${c.barPct}%"></div>
+          <div class="kpi-bar-fill ${barClass}" style="width:0%" data-width="${c.barPct}"></div>
         </div>
       </div>
     `;
   }).join('');
+
+  const aag = document.getElementById('atAGlance');
+  if (aag) {
+    const onTarget = cards.filter(c => c.status === 'success' || c.status === 'warning').length;
+    const below    = cards.filter(c => c.status === 'danger').length;
+    aag.innerHTML = `<span style="font-size:1rem">📊</span><span><strong>Dec 2024 at a glance:</strong> <span class="aag-on">${onTarget} of ${cards.length} KPIs</span> at or above target · <span class="aag-off">${below} below target</span></span>`;
+  }
+
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.kpi-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width + '%';
+    });
+  });
 }
 
 // ── Forecast KPI cards (Forecast tab) ───────────────────────────────────────
@@ -365,11 +378,17 @@ function renderForecastKpiCards() {
           <span class="kpi-delta ${deltaClass}">${dl.text}</span>
         </div>
         <div class="kpi-bar-track">
-          <div class="kpi-bar-fill ${barClass}" style="width:${Math.min(cur, 100)}%"></div>
+          <div class="kpi-bar-fill ${barClass}" style="width:0%" data-width="${Math.min(cur, 100)}"></div>
         </div>
       </div>
     `;
   }).join('');
+
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.kpi-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width + '%';
+    });
+  });
 }
 
 // ── Overview Charts ──────────────────────────────────────────────────────────
