@@ -7,7 +7,7 @@
 // ── Chart.js global defaults ────────────────────────────────────────────────
 Chart.defaults.font.family = "'Inter', system-ui, Arial, sans-serif";
 Chart.defaults.font.size   = 12;
-Chart.defaults.color       = '#5A7A90';
+Chart.defaults.color       = '#94A3B8';
 Chart.defaults.plugins.legend.position = 'bottom';
 Chart.defaults.plugins.legend.labels.usePointStyle  = true;
 Chart.defaults.plugins.legend.labels.pointStyleWidth = 10;
@@ -260,66 +260,81 @@ function renderKpiCards() {
   const grid = document.getElementById('kpiGrid');
   if (!grid) return;
 
-  const curFA   = last(DATA.forecastAccuracy.overall);
-  const prvFA   = prev(DATA.forecastAccuracy.overall);
-  const curDOS  = last(DATA.dos.overall);
-  const prvDOS  = prev(DATA.dos.overall);
-  const curOTD  = last(DATA.otd);
-  const prvOTD  = prev(DATA.otd);
-  const curFR   = last(DATA.fillRate);
-  const prvFR   = prev(DATA.fillRate);
-  const curTO   = last(DATA.turnover.overall);
-  const prvTO   = prev(DATA.turnover.overall);
-  const curOO   = last(DATA.openOrders);
-  const prvOO   = prev(DATA.openOrders);
+  const curFA  = last(DATA.forecastAccuracy.overall);
+  const prvFA  = prev(DATA.forecastAccuracy.overall);
+  const curDOS = last(DATA.dos.overall);
+  const prvDOS = prev(DATA.dos.overall);
+  const curOTD = last(DATA.otd);
+  const prvOTD = prev(DATA.otd);
+  const curFR  = last(DATA.fillRate);
+  const prvFR  = prev(DATA.fillRate);
+  const curTO  = last(DATA.turnover.overall);
+  const prvTO  = prev(DATA.turnover.overall);
+  const curOO  = last(DATA.openOrders);
+  const prvOO  = prev(DATA.openOrders);
 
   const cards = [
     {
       label: 'Forecast Accuracy', value: `${fmt(curFA)}%`,
-      sub: `Target ≥ 85% · FY Avg: ${fmt(avg(DATA.forecastAccuracy.overall))}%`,
+      targetText: 'target ≥ 85%',
+      barPct: Math.min(curFA, 100),
       ...deltaLabel(curFA, prvFA, true),
       status: statusClass(curFA, 85, true),
     },
     {
-      label: 'Days of Supply', value: `${fmt(curDOS)} days`,
-      sub: `Target ≤ 45 days · FY Avg: ${fmt(avg(DATA.dos.overall))} days`,
+      label: 'Days of Supply', value: `${fmt(curDOS)}`,
+      targetText: 'target ≤ 45 days',
+      barPct: Math.min(Math.round(45 / curDOS * 100), 100),
       ...deltaLabel(curDOS, prvDOS, false),
       status: statusClass(curDOS, 45, false),
     },
     {
       label: 'On-Time Delivery', value: `${fmt(curOTD)}%`,
-      sub: `Target ≥ 95% · FY Avg: ${fmt(avg(DATA.otd))}%`,
+      targetText: 'target ≥ 95%',
+      barPct: Math.min(curOTD, 100),
       ...deltaLabel(curOTD, prvOTD, true),
       status: statusClass(curOTD, 95, true),
     },
     {
       label: 'Fill Rate', value: `${fmt(curFR)}%`,
-      sub: `Target ≥ 95% · FY Avg: ${fmt(avg(DATA.fillRate))}%`,
+      targetText: 'target ≥ 95%',
+      barPct: Math.min(curFR, 100),
       ...deltaLabel(curFR, prvFR, true),
       status: statusClass(curFR, 95, true),
     },
     {
       label: 'Inv. Turnover', value: `${fmt(curTO)}×`,
-      sub: `Target ≥ 6.0× · FY Avg: ${fmt(avg(DATA.turnover.overall))}×`,
+      targetText: 'target ≥ 6.0×',
+      barPct: Math.min(Math.round(curTO / 10 * 100), 100),
       ...deltaLabel(curTO, prvTO, true),
       status: statusClass(curTO, 6, true),
     },
     {
       label: 'Open Orders', value: curOO.toLocaleString(),
-      sub: `Dec 2024 · Prior month: ${prvOO.toLocaleString()}`,
+      targetText: `Dec 2024 · prior: ${prvOO.toLocaleString()}`,
+      barPct: Math.min(Math.round(prvOO / curOO * 80), 100),
       ...deltaLabel(curOO, prvOO, false),
       status: statusClass(curOO, prvOO, false, 0.15),
     },
   ];
 
-  grid.innerHTML = cards.map(c => `
-    <div class="kpi-card status-${c.status}">
-      <span class="kpi-badge ${c.isGood ? 'success' : 'danger'}">${c.text}</span>
-      <div class="kpi-label">${c.label}</div>
-      <strong class="kpi-value">${c.value}</strong>
-      <p class="kpi-sub">${c.sub}</p>
-    </div>
-  `).join('');
+  grid.innerHTML = cards.map(c => {
+    const barClass   = c.status === 'success' ? 'bar-success' : c.status === 'warning' ? 'bar-warning' : 'bar-danger';
+    const deltaClass = c.isGood ? (c.status === 'warning' ? 'delta-warn' : 'delta-up') : 'delta-down';
+    return `
+      <div class="kpi-card">
+        <div class="kpi-label">${c.label}</div>
+        <strong class="kpi-value">${c.value}</strong>
+        <div class="kpi-meta-row">
+          <span class="kpi-target-text">${c.targetText}</span>
+          <span class="kpi-delta ${deltaClass}">${c.text}</span>
+        </div>
+        <div class="kpi-bar-track">
+          <div class="kpi-bar-fill ${barClass}" style="width:${c.barPct}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 // ── Forecast KPI cards (Forecast tab) ───────────────────────────────────────
@@ -328,10 +343,10 @@ function renderForecastKpiCards() {
   if (!grid) return;
 
   const families = [
-    { key: 'beverages',   label: 'Beverages',    target: 85 },
-    { key: 'foodItems',   label: 'Food Items',   target: 85 },
-    { key: 'packaging',   label: 'Packaging',    target: 85 },
-    { key: 'consumables', label: 'Consumables',  target: 85 },
+    { key: 'beverages',   label: 'Beverages',   target: 85 },
+    { key: 'foodItems',   label: 'Food Items',  target: 85 },
+    { key: 'packaging',   label: 'Packaging',   target: 85 },
+    { key: 'consumables', label: 'Consumables', target: 85 },
   ];
 
   grid.innerHTML = families.map(f => {
@@ -339,12 +354,19 @@ function renderForecastKpiCards() {
     const prv = prev(DATA.forecastAccuracy[f.key]);
     const st  = statusClass(cur, f.target, true);
     const dl  = deltaLabel(cur, prv, true);
+    const barClass   = st === 'success' ? 'bar-success' : st === 'warning' ? 'bar-warning' : 'bar-danger';
+    const deltaClass = dl.isGood ? (st === 'warning' ? 'delta-warn' : 'delta-up') : 'delta-down';
     return `
-      <div class="kpi-card status-${st}">
-        <span class="kpi-badge ${dl.isGood ? 'success' : 'danger'}">${dl.text}</span>
+      <div class="kpi-card">
         <div class="kpi-label">${f.label}</div>
         <strong class="kpi-value">${fmt(cur)}%</strong>
-        <p class="kpi-sub">Target ≥ ${f.target}% · Dec 2024 · FY Avg: ${fmt(avg(DATA.forecastAccuracy[f.key]))}%</p>
+        <div class="kpi-meta-row">
+          <span class="kpi-target-text">target ≥ ${f.target}% · FY Avg: ${fmt(avg(DATA.forecastAccuracy[f.key]))}%</span>
+          <span class="kpi-delta ${deltaClass}">${dl.text}</span>
+        </div>
+        <div class="kpi-bar-track">
+          <div class="kpi-bar-fill ${barClass}" style="width:${Math.min(cur, 100)}%"></div>
+        </div>
       </div>
     `;
   }).join('');
