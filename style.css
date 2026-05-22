@@ -61,8 +61,6 @@ p { margin: 0; }
 
 /* ── App Shell ── */
 .app-shell {
-  max-width: 1440px;
-  margin: 0 auto;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -154,8 +152,33 @@ p { margin: 0; }
   color: rgba(200,228,244,.7);
   font-size: .82rem;
   line-height: 1.55;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 .header-sub-strip strong { color: rgba(255,255,255,.92); }
+.header-sub-text { flex: 1; min-width: 0; }
+.header-contact { display: flex; gap: 6px; flex-shrink: 0; }
+.header-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--radius-xs);
+  padding: 5px 11px;
+  color: rgba(255,255,255,.85);
+  font-size: .7rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.header-contact-link:hover { background: rgba(255,255,255,.22); color: #fff; }
+.header-contact-link img { width: 13px; height: 13px; object-fit: contain; display: inline-block; }
+.header-contact-link--dl { background: rgba(0,168,212,.25); border-color: rgba(0,168,212,.45); color: #fff; }
+.header-contact-link--dl:hover { background: rgba(0,168,212,.45); }
 
 /* ── Tab Nav ── */
 .tab-nav {
@@ -181,6 +204,25 @@ p { margin: 0; }
   color: var(--navy);
   font-weight: 700;
 }
+
+/* ── At-a-Glance Headline ── */
+.at-a-glance {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .82rem;
+  color: var(--text);
+}
+.at-a-glance-icon { font-size: 1rem; flex-shrink: 0; }
+.at-a-glance strong { color: var(--navy); }
+.at-a-glance .aag-highlight { font-weight: 700; }
+.aag-on  { color: var(--success-text); font-weight: 700; }
+.aag-off { color: var(--danger-text);  font-weight: 700; }
 
 /* ── KPI Grid ── */
 .kpi-grid {
@@ -253,7 +295,11 @@ p { margin: 0; }
 .kpi-bar-fill.bar-danger  { background: linear-gradient(90deg, #F87171, #DC2626); }
 
 /* ── Tab Panes ── */
-.tab-pane { display: flex; flex-direction: column; gap: 12px; }
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tab-pane { display: flex; flex-direction: column; gap: 12px; animation: tabFadeIn .18s ease; }
 .tab-pane.hidden { display: none; }
 
 /* ── Chart Layout ── */
