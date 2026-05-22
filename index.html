@@ -15,86 +15,38 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="app-shell">
-      <!-- ── Sidebar ── -->
-      <aside class="sidebar">
-        <section class="brand-panel">
-          <div class="brand-logo-wrap">
-            <img src="./drlogo2.png" alt="Dither Reyes Global Solutions" class="brand-logo" />
-          </div>
-          <div class="sidebar-contact-row">
-            <a href="https://www.linkedin.com/in/dither-reyes-543273381/" target="_blank" rel="noopener" class="linkedin-link">
-              <img src="./LinkedIn_logo_initials.png" alt="LinkedIn" />
-              LinkedIn
-            </a>
-            <a href="mailto:d.reyes@allianceglobalsolutions.com" class="email-link">✉ Email</a>
-          </div>
-        </section>
-
-        <section class="sidebar-panel disclaimer-panel">
-          <p class="panel-label">Data Disclaimer</p>
-          <p class="disclaimer-text">
-            All data in this dashboard is <strong>entirely fictional</strong> and was created
-            solely to demonstrate supply chain analytics and S&amp;OP dashboarding skills.
-            It is inspired by real operational experience in high-volume retail inventory
-            management. No real company, product, or business data was used.
-          </p>
-        </section>
-
-        <section class="sidebar-panel">
-          <p class="panel-label">KPI Targets</p>
-          <div class="legend-pills">
-            <div class="legend-pill pill-success">At / Above Target</div>
-            <div class="legend-pill pill-warning">Within 5% of Target</div>
-            <div class="legend-pill pill-danger">Below Target</div>
-          </div>
-          <div class="target-list">
-            <div class="target-row"><span>Forecast Accuracy</span><strong>≥ 85%</strong></div>
-            <div class="target-row"><span>Days of Supply</span><strong>≤ 45 days</strong></div>
-            <div class="target-row"><span>On-Time Delivery</span><strong>≥ 95%</strong></div>
-            <div class="target-row"><span>Fill Rate</span><strong>≥ 95%</strong></div>
-            <div class="target-row"><span>Inv. Turnover</span><strong>≥ 6.0×</strong></div>
-          </div>
-        </section>
-
-        <section class="sidebar-panel">
-          <p class="panel-label">Data Period</p>
-          <h3 class="sidebar-heading">Jan – Dec 2024</h3>
-          <p class="sidebar-note">12-month S&OP cycle · 4 product families · Top 30 SKUs tracked</p>
-        </section>
-      </aside>
-
       <!-- ── Main Content ── -->
       <main class="main-content" id="main-content">
 
         <!-- Header -->
         <header class="page-header">
           <div class="header-top-row">
-            <div class="header-logo-slot">
-              <img src="./drlogo2.png" alt="DRGS" class="header-logo" />
+            <div class="header-left">
+              <div class="header-logo-slot">
+                <img src="./drlogo2.png" alt="DRGS" class="header-logo" />
+              </div>
+              <div class="header-copy">
+                <span class="header-kicker">Supply Chain Analytics · Portfolio Demo · by Dither Reyes</span>
+                <h1>S&amp;OP Performance Dashboard</h1>
+              </div>
             </div>
-            <div class="header-copy">
-              <span class="header-kicker">Supply Chain Analytics · Portfolio Demo · by Dither Reyes</span>
-              <h1>S&amp;OP Performance Dashboard</h1>
-              <p class="header-sub">FY 2024 · Simulated Dataset — Metro Brew F&amp;B Corp.</p>
+            <div class="header-badges">
+              <span class="header-badge">FY 2024</span>
+              <span class="header-badge">Metro Brew F&amp;B Corp.</span>
+              <span class="header-badge badge-accent">Simulated Data</span>
             </div>
+          </div>
+          <div class="header-sub-strip">
+            <strong>Dither Reyes</strong> — Supply chain professional demonstrating <strong>S&amp;OP analytics</strong>, inventory management, and BI capabilities for a Senior Supply Chain Analyst role. This simulates a 12-month FY 2024 F&amp;B supply chain with forecast accuracy, DOS, and delivery KPIs.
           </div>
           <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
-            <button class="tab-btn is-active" data-tab="overview"   role="tab" aria-selected="true"  type="button">Overview</button>
-            <button class="tab-btn"           data-tab="inventory"  role="tab" aria-selected="false" type="button">Inventory</button>
-            <button class="tab-btn"           data-tab="forecast"   role="tab" aria-selected="false" type="button">Forecast</button>
-            <button class="tab-btn"           data-tab="sop"        role="tab" aria-selected="false" type="button">S&amp;OP</button>
-            <button class="tab-btn"           data-tab="shipments"  role="tab" aria-selected="false" type="button">Shipments</button>
+            <button class="tab-btn is-active" data-tab="overview"  role="tab" aria-selected="true"  type="button">Overview</button>
+            <button class="tab-btn"           data-tab="inventory" role="tab" aria-selected="false" type="button">Inventory</button>
+            <button class="tab-btn"           data-tab="forecast"  role="tab" aria-selected="false" type="button">Forecast</button>
+            <button class="tab-btn"           data-tab="sop"       role="tab" aria-selected="false" type="button">S&amp;OP</button>
+            <button class="tab-btn"           data-tab="shipments" role="tab" aria-selected="false" type="button">Shipments</button>
           </nav>
         </header>
-
-        <!-- About / Personal context banner -->
-        <div class="about-banner">
-          <div class="about-content">
-            <strong class="about-name">Dither Reyes</strong>
-            <span class="about-sep"> — </span>
-            <span class="about-text">Supply chain professional demonstrating <strong>S&amp;OP analytics</strong>, inventory management, and BI capabilities for a Senior Supply Chain Analyst role. This simulates a 12-month FY 2024 F&amp;B supply chain with forecast accuracy, DOS, and delivery KPIs — the same operational decisions I've made at store level, presented at enterprise scale.</span>
-          </div>
-        </div>
 
         <!-- KPI Cards -->
         <section class="kpi-grid" id="kpiGrid" aria-label="Key performance indicators"></section>
@@ -372,6 +324,10 @@
             </article>
           </div>
         </div>
+
+        <footer class="disclaimer-footer">
+          <strong>Data Disclaimer:</strong> All data in this dashboard is <strong>entirely fictional</strong> and was created solely to demonstrate supply chain analytics and S&amp;OP dashboarding skills. No real company, product, or business data was used.
+        </footer>
 
       </main>
     </div>
