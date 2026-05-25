@@ -615,6 +615,24 @@ p { margin: 0; }
 }
 
 @media (max-width: 480px) {
+  :root { --hm-label: 76px; }
+  .heatmap-grid { gap: 3px; }
+  .heatmap-row-label {
+    font-size: .58rem;
+    min-width: var(--hm-label);
+    max-width: var(--hm-label);
+    padding-right: .25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .heatmap-cell { min-width: 28px; height: 26px; font-size: .5rem; border-radius: 3px; }
+  .heatmap-col-label { font-size: .48rem; padding: .15rem .05rem .25rem; }
+  .heatmap-legend { gap: .35rem; margin-top: .5rem; padding-top: .5rem; }
+  .heatmap-legend-chip { font-size: .6rem; }
+  .heatmap-scroll-hint { font-size: .7rem; }
+}
+
+@media (max-width: 480px) {
   .app-shell { padding: 8px; gap: 8px; }
 
   /* Header: stack logo + title, shrink logo */

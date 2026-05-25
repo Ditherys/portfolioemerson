@@ -715,7 +715,7 @@ function renderHeatmap(containerId) {
   // Data rows
   metrics.forEach(metric => {
     const cfg = DATA.sopScorecard[metric];
-    gridHtml += `<div class="heatmap-row-label">${metric}</div>`;
+    gridHtml += `<div class="heatmap-row-label" title="${metric}">${metric}</div>`;
     cfg.values.forEach(v => {
       const cls  = heatClass(v, cfg.target, cfg.higherIsBetter);
       const disp = `${fmt(v)}${cfg.suffix}`;
