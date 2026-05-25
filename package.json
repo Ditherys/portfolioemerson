@@ -1,0 +1,14 @@
+{
+  "name": "drgs-supply-chain-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Supply Chain S&OP Performance Dashboard — Dither Reyes Global Solutions Portfolio",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
+  },
+  "devDependencies": {
+    "vercel": "^51.0.0"
+  }
+}

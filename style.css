@@ -93,10 +93,10 @@ p { margin: 0; }
 }
 
 .header-logo-slot {
-  width: 44px;
-  height: 44px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.2);
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,.3);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -104,7 +104,7 @@ p { margin: 0; }
   flex-shrink: 0;
   overflow: hidden;
 }
-.header-logo { max-height: 32px; width: auto; object-fit: contain; }
+.header-logo { max-height: 48px; width: auto; object-fit: contain; }
 
 .header-copy { min-width: 0; flex: 1; }
 .header-kicker {
@@ -433,6 +433,9 @@ p { margin: 0; }
   font-size: .65rem;
   font-weight: 700;
 }
+.heatmap-legend-chip.heat-success { background: #D1F0DC; color: #14602C; }
+.heatmap-legend-chip.heat-warning { background: #FEF3C7; color: #8A6200; }
+.heatmap-legend-chip.heat-danger  { background: #FDDEDE; color: #9B1C1C; }
 
 /* ── Tables ── */
 .table-wrap { width: 100%; overflow-x: auto; }
