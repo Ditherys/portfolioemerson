@@ -113,9 +113,9 @@ const DATA = {
       values: [94.2, 93.8, 95.1, 96.3, 95.8, 97.1, 97.8, 97.2, 96.4, 97.5, 97.9, 98.1],
       target: 95,  higherIsBetter: true,  suffix: '%',
     },
-    'Demand Attainment %': {
-      values: [97.8, 96.6, 97.5, 98.8, 98.7,100.5,100.6, 99.0, 99.0,100.4,100.4, 99.2],
-      target: 98,  higherIsBetter: true,  suffix: '%',
+    'Inventory Turnover': {
+      values: [5.9, 5.7, 6.3, 6.8, 6.6, 7.2, 7.5, 7.1, 6.7, 7.3, 7.7, 8.1],
+      target: 6,  higherIsBetter: true,  suffix: '×',
     },
   },
 
@@ -270,8 +270,6 @@ function renderKpiCards() {
   const prvFR  = prev(DATA.fillRate);
   const curTO  = last(DATA.turnover.overall);
   const prvTO  = prev(DATA.turnover.overall);
-  const curOO  = last(DATA.openOrders);
-  const prvOO  = prev(DATA.openOrders);
 
   const cards = [
     {
@@ -308,13 +306,6 @@ function renderKpiCards() {
       barPct: Math.min(Math.round(curTO / 10 * 100), 100),
       ...deltaLabel(curTO, prvTO, true),
       status: statusClass(curTO, 6, true),
-    },
-    {
-      label: 'Open Orders', value: curOO.toLocaleString(),
-      targetText: `Dec 2024 · prior: ${prvOO.toLocaleString()}`,
-      barPct: Math.min(Math.round(prvOO / curOO * 80), 100),
-      ...deltaLabel(curOO, prvOO, false),
-      status: statusClass(curOO, prvOO, false, 0.15),
     },
   ];
 
