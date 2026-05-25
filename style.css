@@ -596,13 +596,15 @@ p { margin: 0; }
 }
 
 @media (max-width: 780px) {
-  .app-shell { padding: 10px; }
+  .app-shell { padding: 10px; gap: 10px; }
   .chart-row-2 { grid-template-columns: 1fr; }
   .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   #forecastKpiGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-wrap { height: 240px; }
   .header-top-row { padding: 14px 16px 12px; }
-  .header-sub-strip { padding: 8px 16px; font-size: .78rem; }
+  /* Stack sub-strip text above contact links */
+  .header-sub-strip { flex-direction: column; align-items: flex-start; padding: 10px 16px; gap: 10px; font-size: .78rem; }
+  .header-contact { flex-wrap: wrap; gap: 6px; }
   .tab-nav { padding: 8px 16px 0; }
   :root { --hm-label: 108px; }
   .heatmap-row-label { font-size: .65rem; min-width: var(--hm-label); max-width: var(--hm-label); padding-right: .35rem; }
@@ -613,8 +615,54 @@ p { margin: 0; }
 }
 
 @media (max-width: 480px) {
-  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tab-btn { font-size: .75rem; padding: 6px 12px; }
+  .app-shell { padding: 8px; gap: 8px; }
+
+  /* Header: stack logo + title, shrink logo */
+  .header-top-row { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 14px 10px; }
+  .header-left { gap: 10px; }
+  .header-logo-slot { width: 44px; height: 44px; }
+  .header-logo { max-height: 32px; }
+  .header-kicker { display: none; }
+  .header-copy h1 { font-size: 1.05rem; }
+
+  /* Sub-strip: hide long description, keep only links */
+  .header-sub-text { display: none; }
+  .header-sub-strip { padding: 8px 14px; }
+  .header-contact { gap: 5px; }
+  .header-contact-link { font-size: .68rem; padding: 5px 9px; }
+
+  /* Tab nav: horizontal scroll instead of wrapping */
+  .tab-nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding: 8px 14px 0;
+    gap: 4px;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { font-size: .72rem; padding: 6px 11px; white-space: nowrap; flex-shrink: 0; }
+
+  /* KPI grid: 2 columns, more compact cards */
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  #forecastKpiGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .kpi-card { padding: 10px 12px; }
+  .kpi-value { font-size: 1.4rem; }
+
+  /* KPI legend: compact */
+  .kpi-legend-strip { gap: 5px; }
+  .kpi-legend-chip { font-size: .65rem; padding: .15rem .5rem; }
+  .kpi-legend-label { display: none; }
+
+  /* Charts: shorter on small screens */
+  .chart-wrap { height: 200px; }
+
+  /* Sticky bar: hide brand text, give tabs full width */
+  .sticky-brand { display: none; }
+  .sticky-tabs { gap: .2rem; }
+  .sticky-tab { font-size: .67rem; padding: 0 .5rem; }
+
+  /* At-a-glance: slightly smaller */
+  .at-a-glance { font-size: .76rem; padding: 8px 12px; }
 }
 
 /* ── Focus styles ── */
