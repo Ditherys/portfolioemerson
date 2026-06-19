@@ -47,14 +47,70 @@ Food Items:  6.8, 6.5, 7.1, 7.5, 7.2, 7.8, 8.1, 7.7, 7.3, 7.9, 8.3, 8.7
 Packaging:   7.9, 7.6, 8.3, 8.9, 8.5, 9.1, 9.5, 9.0, 8.6, 9.2, 9.7, 10.1
 Consumables: 3.8, 3.6, 4.1, 4.5, 4.2, 4.8, 5.1, 4.7, 4.4, 4.9, 5.3, 5.7
 
+== DEMAND PLAN vs. ACTUAL SHIPMENTS (units '000s) ==
+Plan:   3120, 2980, 3260, 2800, 2830, 2820, 2950, 3120, 3060, 2900, 2750, 2640
+Actual: 3050, 2880, 3180, 2765, 2795, 2835, 2968, 3088, 3028, 2912, 2762, 2618
+Note: H1 consistently under-delivered vs. plan; H2 tracked closer as forecast accuracy improved. June actual (+15k) and July (+18k) beat plan.
+
+== OPEN ORDERS (count, month-end) ==
+1240, 1180, 1320, 1050, 1080, 980, 920, 1020, 1100, 950, 870, 820
+Note: March spike (1320) = quarter-end push. Steady H2 decline reflects improved fulfillment. Dec (820) is the year's lowest.
+
+== INVENTORY VALUE by FAMILY ($M) ==
+Beverages:   8.24, 7.85, 8.71, 7.28, 6.95, 6.48, 6.75, 7.28, 7.62, 7.15, 6.62, 6.28
+Food Items:  5.62, 5.43, 5.82, 5.03, 5.23, 5.36, 5.75, 5.95, 5.62, 5.43, 5.23, 5.03
+Packaging:   4.11, 3.91, 4.23, 3.84, 4.03, 4.17, 4.30, 4.50, 4.23, 3.97, 3.84, 3.70
+Consumables: 2.51, 2.38, 2.65, 2.25, 2.38, 2.51, 2.58, 2.78, 2.65, 2.51, 2.38, 2.25
+Total Dec: Bev $6.28M + Food $5.03M + Pkg $3.70M + CSM $2.25M = ~$17.26M
+
+== SHIPMENT BREAKDOWN (monthly counts) ==
+On-Time: 2814, 2614, 2992, 2637, 2601, 2723, 2880, 2959, 2837, 2803, 2680, 2560
+Early:     78,   91,   60,   35,   55,   27,   19,   29,   61,   25,   15,    8
+Late:     158,  175,  128,   93,  139,   85,   69,  100,  130,   84,   67,   50
+Note: Feb had highest late count (175) and lowest on-time (2614). Jul had fewest late (69). Early shipments trended down as planning tightened.
+
+== TOP FORECAST MISSES (FY 2024) ==
+SKU / Description                       | Family      | Month | Plan | Actual | Var%   | Root Cause
+BEV-A002 House Blend Medium Roast 500g  | Beverages   | Nov   | 3400 | 2850   | -16.2% | Promo Pull-forward
+FOD-X200 Club Sandwich Chilled          | Food Items  | Sep   | 1580 | 1240   | -21.5% | New Menu Launch Impact
+BEV-C015 Vanilla Syrup 750ml            | Beverages   | Oct   | 2420 | 1980   | -18.2% | Seasonal Demand Drop
+PKG-G003 12oz Paper Cup Sleeve 50u      | Packaging   | Aug   | 950  | 820    | -13.7% | Store Expansion Delay
+CSM-S088 Antibacterial Hand Soap 500ml  | Consumables | Dec   | 1820 | 1540   | -15.4% | Supplier Delivery Delay
+FOD-X100 Egg White Egg Bite 2-pk        | Food Items  | Nov   | 1050 | 890    | -15.2% | Online Order Surge
+BEV-B007 Oat Milk 1L Carton            | Beverages   | Dec   | 3480 | 3120   | -10.3% | Holiday Promo Underperformance
+PKG-H001 Hot Cup Lid 12oz Sleeve 50u   | Packaging   | Jul   | 710  | 640    |  -9.9% | Seasonal Slowdown
+Largest single miss: FOD-X200 at -21.5% in September (New Menu Launch Impact).
+
+== TOP INVENTORY SKUs (by value, current status) ==
+Rank | SKU      | Description                        | Family      | DOS  | Status  | Action
+  1  | BEV-A001 | Espresso Dark Roast Blend 1kg      | Beverages   | 78.3 | At Risk | Reduce PO
+  2  | BEV-A002 | House Blend Medium Roast 500g      | Beverages   | 65.1 | At Risk | Reduce PO
+  3  | CSM-S010 | Barista Cleaning Tablets 100pk     | Consumables | 71.4 | At Risk | Review DOS
+  4  | FOD-X100 | Egg White & Red Pepper Egg Bite    | Food Items  | 55.8 | Monitor | Review Forecast
+  5  | BEV-B007 | Oat Milk 1L Carton                 | Beverages   | 48.2 | Monitor | Monitor Weekly
+  6  | BEV-C015 | Vanilla Syrup 750ml                | Beverages   | 52.1 | Monitor | Monitor Weekly
+  7  | PKG-G003 | 12oz Paper Cup Sleeve 50u          | Packaging   | 42.3 | Normal  | On Plan
+  8  | FOD-X200 | Club Sandwich Chilled              | Food Items  | 44.8 | Normal  | On Plan
+  9  | CSM-S088 | Antibacterial Hand Soap 500ml      | Consumables | 61.5 | Monitor | Monitor Weekly
+ 10  | PKG-H001 | Hot Cup Lid 12oz Sleeve 50u        | Packaging   | 39.8 | Normal  | On Plan
+3 At-Risk SKUs: BEV-A001 (78.3 days), CSM-S010 (71.4 days), BEV-A002 (65.1 days) — all need PO reduction.
+
+== PRODUCT FAMILIES ==
+- Beverages: coffee blends, syrups, milk alternatives, sauces — highest inventory value, most at-risk SKUs
+- Food Items: chilled ready-to-sell sandwiches, egg bites, bowls, wraps — short shelf life, high velocity
+- Packaging: paper cups, lids, sleeves, bags, straws — highest turnover, always below DOS target
+- Consumables: cleaning tablets, soaps, gloves, descalers — irregular demand, hardest to forecast, never hit FA target
+
 == KEY BUSINESS CONTEXT ==
 - H1 = Jan–Jun (first half of year), H2 = Jul–Dec (second half)
 - February was the worst month: lowest FA (79.1%), highest DOS (54.9 days), worst OTD (90.8%) simultaneously
 - June was the turning point: DOS dropped below 45-day target and FA crossed 85% in the same month — confirms causal link between forecast accuracy and inventory
 - August DOS bounce to 45.3 days was intentional seasonal pre-stocking, not a regression
-- Consumables was consistently the weakest product family (lowest FA, highest DOS, lowest turnover)
-- Packaging was consistently the strongest performer across all metrics
+- Consumables was consistently the weakest product family (lowest FA, highest DOS, lowest turnover) — never hit the 85% FA target all year
+- Packaging was consistently the strongest performer across all metrics — hit DOS target every single month
+- Beverages carries the largest inventory value ($8.24M peak in March) but also has 2 of the 3 at-risk SKUs
 - All 5 KPIs ended December above their targets — the improvement initiative worked
+- S&OP (Sales & Operations Planning) = monthly process where sales forecasts are reconciled with operations capacity, inventory, and supply plans to agree on one integrated business plan
 - The data is fictional, created to demonstrate supply chain analytics skills
 
 Be concise and analytical. Use specific data points. Keep responses under 150 words unless the question requires more detail.`;
