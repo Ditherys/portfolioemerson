@@ -36,9 +36,11 @@ Consumables: 65.3, 68.2, 62.1, 58.4, 60.2, 56.8, 54.1, 55.7, 57.3, 53.8, 51.2, 4
 
 == ON-TIME DELIVERY % (Target: ≥95%) ==
 Overall: 92.3, 90.8, 94.1, 95.4, 93.2, 96.1, 97.3, 95.8, 93.7, 96.4, 97.1, 97.8
+Note: Overall figures only — no per-family breakdown exists for OTD. Do NOT invent family-level OTD numbers.
 
 == FILL RATE % (Target: ≥95%) ==
 Overall: 94.2, 93.8, 95.1, 96.3, 95.8, 97.1, 97.8, 97.2, 96.4, 97.5, 97.9, 98.1
+Note: Overall figures only — no per-family breakdown exists for Fill Rate. Do NOT invent family-level Fill Rate numbers.
 
 == INVENTORY TURNOVER × (Target: ≥6×) ==
 Overall:     5.9, 5.7, 6.3, 6.8, 6.6, 7.2, 7.5, 7.1, 6.7, 7.3, 7.7, 8.1
@@ -48,9 +50,13 @@ Packaging:   7.9, 7.6, 8.3, 8.9, 8.5, 9.1, 9.5, 9.0, 8.6, 9.2, 9.7, 10.1
 Consumables: 3.8, 3.6, 4.1, 4.5, 4.2, 4.8, 5.1, 4.7, 4.4, 4.9, 5.3, 5.7
 
 == DEMAND PLAN vs. ACTUAL SHIPMENTS (units '000s) ==
+IMPORTANT: These are COMPANY-WIDE monthly totals. For individual SKU-level misses, see the TOP FORECAST MISSES section — those are different numbers.
 Plan:   3120, 2980, 3260, 2800, 2830, 2820, 2950, 3120, 3060, 2900, 2750, 2640
 Actual: 3050, 2880, 3180, 2765, 2795, 2835, 2968, 3088, 3028, 2912, 2762, 2618
-Note: H1 consistently under-delivered vs. plan; H2 tracked closer as forecast accuracy improved. June actual (+15k) and July (+18k) beat plan.
+Gap:     -70, -100,  -80,  -35,  -35,  +15,  +18,  -32,  -32,  +12,  +12,  -22
+Worst month for overall demand vs supply: FEBRUARY — actual 2,880k vs plan 2,980k = -100k units (-3.4% vs plan).
+Second worst: March (-80k), then January (-70k).
+Months that beat plan: June (+15k), July (+18k), October (+12k), November (+12k).
 
 == OPEN ORDERS (count, month-end) ==
 1240, 1180, 1320, 1050, 1080, 980, 920, 1020, 1100, 950, 870, 820
@@ -70,6 +76,7 @@ Late:     158,  175,  128,   93,  139,   85,   69,  100,  130,   84,   67,   50
 Note: Feb had highest late count (175) and lowest on-time (2614). Jul had fewest late (69). Early shipments trended down as planning tightened.
 
 == TOP FORECAST MISSES (FY 2024) ==
+IMPORTANT: These are SKU-level variances (one product × one month), NOT company-wide monthly totals. Do NOT use these to answer "which month was worst overall" — use the DEMAND PLAN gap row for that.
 SKU / Description                       | Family      | Month | Plan | Actual | Var%   | Root Cause
 BEV-A002 House Blend Medium Roast 500g  | Beverages   | Nov   | 3400 | 2850   | -16.2% | Promo Pull-forward
 FOD-X200 Club Sandwich Chilled          | Food Items  | Sep   | 1580 | 1240   | -21.5% | New Menu Launch Impact
@@ -94,6 +101,7 @@ Rank | SKU      | Description                        | Family      | DOS  | Stat
   9  | CSM-S088 | Antibacterial Hand Soap 500ml      | Consumables | 61.5 | Monitor | Monitor Weekly
  10  | PKG-H001 | Hot Cup Lid 12oz Sleeve 50u        | Packaging   | 39.8 | Normal  | On Plan
 3 At-Risk SKUs: BEV-A001 (78.3 days), CSM-S010 (71.4 days), BEV-A002 (65.1 days) — all need PO reduction.
+Note: This shows top 10 of 30 monitored SKUs. The remaining 20 are all Normal status.
 
 == PRODUCT FAMILIES ==
 - Beverages: coffee blends, syrups, milk alternatives, sauces — highest inventory value, most at-risk SKUs
@@ -103,13 +111,15 @@ Rank | SKU      | Description                        | Family      | DOS  | Stat
 
 == KEY BUSINESS CONTEXT ==
 - H1 = Jan–Jun (first half of year), H2 = Jul–Dec (second half)
-- February was the worst month: lowest FA (79.1%), highest DOS (54.9 days), worst OTD (90.8%) simultaneously
+- February was the worst month overall: lowest FA (79.1%), highest DOS (54.9 days), worst OTD (90.8%), and worst demand vs supply gap (-100k units) — all simultaneously
 - June was the turning point: DOS dropped below 45-day target and FA crossed 85% in the same month — confirms causal link between forecast accuracy and inventory
 - August DOS bounce to 45.3 days was intentional seasonal pre-stocking, not a regression
-- Consumables was consistently the weakest product family (lowest FA, highest DOS, lowest turnover) — never hit the 85% FA target all year
+- Consumables was consistently the weakest product family (lowest FA, highest DOS, lowest turnover) — never hit the 85% FA target all year, and never hit the ≥6× inventory turnover target (ended at 5.7× in December)
+- Beverages also missed the ≥6× turnover target in January (5.2×) and February (5.1×), then recovered in April (6.2×) and stayed above target for H2
 - Packaging was consistently the strongest performer across all metrics — hit DOS target every single month
 - Beverages carries the largest inventory value ($8.24M peak in March) but also has 2 of the 3 at-risk SKUs
 - All 5 KPIs ended December above their targets — the improvement initiative worked
+- OTD and Fill Rate are tracked at overall level only — there is no per-family breakdown for these two KPIs
 - S&OP (Sales & Operations Planning) = monthly process where sales forecasts are reconciled with operations capacity, inventory, and supply plans to agree on one integrated business plan
 - The data is fictional, created to demonstrate supply chain analytics skills
 
