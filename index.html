@@ -366,5 +366,115 @@
     </nav>
 
     <script src="./app.js"></script>
+
+    <!-- ── AI Chat Widget ── -->
+    <div id="chatWidget">
+      <div class="chat-launcher">
+        <span class="chat-launcher-label">Ask Emmie</span>
+        <button id="chatToggle" class="chat-toggle-btn" aria-label="Ask Emmie about this data" type="button">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="currentColor"/>
+        </svg>
+        </button>
+      </div>
+      <div id="chatPanel" class="chat-panel" hidden>
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <span class="chat-dot" aria-hidden="true"></span>
+            <span class="chat-title">Emmie · DRGS AI</span>
+          </div>
+          <button id="chatClose" class="chat-close-btn" aria-label="Close chat" type="button">✕</button>
+        </div>
+        <div id="chatMessages" class="chat-messages" role="log" aria-live="polite">
+          <div class="chat-msg ai">
+            <span class="chat-bubble">Hi! Ask me anything about this supply chain data — e.g. "What was the worst month?" or "How did Consumables perform?"</span>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input id="chatInput" class="chat-input" type="text" placeholder="Ask about the data…" autocomplete="off" aria-label="Chat message" />
+          <button id="chatSend" class="chat-send-btn" type="button" aria-label="Send">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M22 2L11 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      var toggle   = document.getElementById('chatToggle');
+      var panel    = document.getElementById('chatPanel');
+      var closeBtn = document.getElementById('chatClose');
+      var msgBox   = document.getElementById('chatMessages');
+      var input    = document.getElementById('chatInput');
+      var sendBtn  = document.getElementById('chatSend');
+      var history  = [];
+
+      toggle.addEventListener('click', function () {
+        if (panel.hasAttribute('hidden')) {
+          panel.removeAttribute('hidden');
+          input.focus();
+        } else {
+          panel.setAttribute('hidden', '');
+        }
+      });
+
+      closeBtn.addEventListener('click', function () {
+        panel.setAttribute('hidden', '');
+      });
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+      });
+
+      sendBtn.addEventListener('click', send);
+
+      function addMsg(role, text, loading) {
+        var wrap   = document.createElement('div');
+        wrap.className = 'chat-msg ' + role;
+        var bubble = document.createElement('span');
+        bubble.className = 'chat-bubble' + (loading ? ' loading' : '');
+        bubble.textContent = text;
+        wrap.appendChild(bubble);
+        msgBox.appendChild(wrap);
+        msgBox.scrollTop = msgBox.scrollHeight;
+        return bubble;
+      }
+
+      function send() {
+        var text = input.value.trim();
+        if (!text || sendBtn.disabled) return;
+        input.value = '';
+        sendBtn.disabled = true;
+        addMsg('user', text);
+        var loadingBubble = addMsg('ai', 'Thinking…', true);
+
+        fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history: history }),
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var reply = d.reply || d.error || 'No response.';
+            loadingBubble.textContent = reply;
+            loadingBubble.classList.remove('loading');
+            history.push({ role: 'user', content: text });
+            history.push({ role: 'assistant', content: reply });
+            if (history.length > 12) history = history.slice(-12);
+          })
+          .catch(function () {
+            loadingBubble.textContent = 'Something went wrong. Please try again.';
+            loadingBubble.classList.remove('loading');
+          })
+          .finally(function () {
+            sendBtn.disabled = false;
+            input.focus();
+          });
+      }
+    })();
+    </script>
   </body>
 </html>
