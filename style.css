@@ -745,7 +745,7 @@ select:focus-visible {
   position: absolute;
   bottom: 64px;
   right: 0;
-  width: 320px;
+  width: 380px;
   background: #0F1E2E;
   border: 1px solid rgba(0, 168, 212, 0.25);
   border-radius: 12px;
@@ -800,8 +800,8 @@ select:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 300px;
-  min-height: 100px;
+  max-height: 420px;
+  min-height: 180px;
 }
 
 .chat-msg { display: flex; flex-direction: column; }
