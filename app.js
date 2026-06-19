@@ -211,6 +211,41 @@ function mkChart(id, config) {
   return charts[id];
 }
 
+// ── Family toggle buttons (inserted above multi-family line charts) ───────────
+function addFamilyToggles(chartId, families) {
+  const canvas = document.getElementById(chartId);
+  if (!canvas) return;
+  const wrap = canvas.parentElement;
+  const card = wrap.parentElement;
+
+  // Remove any existing bar (in case tab re-renders)
+  card.querySelector('.family-toggle-bar')?.remove();
+
+  const bar = document.createElement('div');
+  bar.className = 'family-toggle-bar';
+
+  families.forEach(({ label, index, color }) => {
+    const btn = document.createElement('button');
+    btn.className = 'family-toggle active';
+    btn.style.setProperty('--fc', color);
+    btn.setAttribute('aria-pressed', 'true');
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      const chart = charts[chartId];
+      if (!chart) return;
+      const meta = chart.getDatasetMeta(index);
+      meta.hidden = !meta.hidden;
+      const isActive = !meta.hidden;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+      chart.update();
+    });
+    bar.appendChild(btn);
+  });
+
+  card.insertBefore(bar, wrap);
+}
+
 // ── Shared chart options ─────────────────────────────────────────────────────
 const TOOLTIP_OPTS = {
   backgroundColor: 'rgba(27, 58, 92, 0.93)',
@@ -439,6 +474,14 @@ function initOverviewCharts() {
 
   // 4. S&OP Heatmap (overview)
   renderHeatmap('sopHeatmap');
+
+  addFamilyToggles('faOverviewChart', [
+    { label: 'Beverages',   index: 0, color: FAMILY_COLORS.beverages },
+    { label: 'Food Items',  index: 1, color: FAMILY_COLORS.foodItems },
+    { label: 'Packaging',   index: 2, color: FAMILY_COLORS.packaging },
+    { label: 'Consumables', index: 3, color: FAMILY_COLORS.consumables },
+    { label: 'Overall',     index: 4, color: C.navy },
+  ]);
 }
 
 // ── Inventory Charts ─────────────────────────────────────────────────────────
@@ -485,6 +528,13 @@ function initInventoryCharts() {
 
   // Top 30 table
   renderTop30Table();
+
+  addFamilyToggles('dosChart', [
+    { label: 'Beverages',   index: 0, color: FAMILY_COLORS.beverages },
+    { label: 'Food Items',  index: 1, color: FAMILY_COLORS.foodItems },
+    { label: 'Packaging',   index: 2, color: FAMILY_COLORS.packaging },
+    { label: 'Consumables', index: 3, color: FAMILY_COLORS.consumables },
+  ]);
 }
 
 // ── Forecast Charts ──────────────────────────────────────────────────────────
@@ -538,6 +588,13 @@ function initForecastCharts() {
 
   // Forecast Misses table
   renderForecastMissTable();
+
+  addFamilyToggles('faFamilyChart', [
+    { label: 'Beverages',   index: 0, color: FAMILY_COLORS.beverages },
+    { label: 'Food Items',  index: 1, color: FAMILY_COLORS.foodItems },
+    { label: 'Packaging',   index: 2, color: FAMILY_COLORS.packaging },
+    { label: 'Consumables', index: 3, color: FAMILY_COLORS.consumables },
+  ]);
 }
 
 // ── S&OP Charts ──────────────────────────────────────────────────────────────
@@ -600,6 +657,13 @@ function initSopCharts() {
 
   // Full S&OP heatmap
   renderHeatmap('sopHeatmapFull');
+
+  addFamilyToggles('turnoverChart', [
+    { label: 'Beverages',   index: 0, color: FAMILY_COLORS.beverages },
+    { label: 'Food Items',  index: 1, color: FAMILY_COLORS.foodItems },
+    { label: 'Packaging',   index: 2, color: FAMILY_COLORS.packaging },
+    { label: 'Consumables', index: 3, color: FAMILY_COLORS.consumables },
+  ]);
 }
 
 // ── Shipments Charts ─────────────────────────────────────────────────────────
