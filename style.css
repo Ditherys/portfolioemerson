@@ -800,8 +800,16 @@ select:focus-visible {
   background: var(--navy);
   border-bottom: 1px solid rgba(0, 168, 212, 0.2);
   flex-shrink: 0;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
+.chat-header:active { cursor: grabbing; }
 .chat-header-info { display: flex; align-items: center; gap: 8px; }
+
+/* While dragging, suppress text selection + transitions for a smooth follow */
+body.chat-dragging { user-select: none; cursor: grabbing; }
+body.chat-dragging .chat-panel { transition: none; }
 
 .chat-dot {
   width: 8px;

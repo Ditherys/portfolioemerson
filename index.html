@@ -469,6 +469,58 @@
             input.focus();
           });
       }
+
+      // ── Draggable panel (drag by the header) ─────────────────────────────
+      var header = panel.querySelector('.chat-header');
+      var drag = { active: false, startX: 0, startY: 0, baseLeft: 0, baseTop: 0 };
+
+      function dragStart(e) {
+        if (e.target.closest('.chat-close-btn')) return; // let the close button work
+        var point = e.touches ? e.touches[0] : e;
+        var rect = panel.getBoundingClientRect();
+        // Detach from the bottom-right anchor and pin to fixed screen coords
+        panel.style.position = 'fixed';
+        panel.style.left   = rect.left + 'px';
+        panel.style.top    = rect.top + 'px';
+        panel.style.right  = 'auto';
+        panel.style.bottom = 'auto';
+        drag.active = true;
+        drag.startX = point.clientX;
+        drag.startY = point.clientY;
+        drag.baseLeft = rect.left;
+        drag.baseTop  = rect.top;
+        document.body.classList.add('chat-dragging');
+        e.preventDefault();
+      }
+
+      function dragMove(e) {
+        if (!drag.active) return;
+        var point = e.touches ? e.touches[0] : e;
+        var dx = point.clientX - drag.startX;
+        var dy = point.clientY - drag.startY;
+        var left = drag.baseLeft + dx;
+        var top  = drag.baseTop + dy;
+        // Clamp so the panel always stays fully on screen (8px margin)
+        var maxLeft = window.innerWidth  - panel.offsetWidth  - 8;
+        var maxTop  = window.innerHeight - panel.offsetHeight - 8;
+        left = Math.max(8, Math.min(left, Math.max(8, maxLeft)));
+        top  = Math.max(8, Math.min(top,  Math.max(8, maxTop)));
+        panel.style.left = left + 'px';
+        panel.style.top  = top + 'px';
+        if (e.cancelable) e.preventDefault();
+      }
+
+      function dragEnd() {
+        drag.active = false;
+        document.body.classList.remove('chat-dragging');
+      }
+
+      header.addEventListener('mousedown', dragStart);
+      window.addEventListener('mousemove', dragMove);
+      window.addEventListener('mouseup', dragEnd);
+      header.addEventListener('touchstart', dragStart, { passive: false });
+      window.addEventListener('touchmove', dragMove, { passive: false });
+      window.addEventListener('touchend', dragEnd);
     })();
     </script>
   </body>
