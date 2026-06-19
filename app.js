@@ -321,7 +321,7 @@ function renderKpiCards() {
           <span class="kpi-delta ${deltaClass}">${c.text}</span>
         </div>
         <div class="kpi-bar-track">
-          <div class="kpi-bar-fill ${barClass}" style="width:0%" data-width="${c.barPct}"></div>
+          <div class="kpi-bar-fill ${barClass}" style="transform:scaleX(0)" data-width="${c.barPct}"></div>
         </div>
       </div>
     `;
@@ -336,7 +336,7 @@ function renderKpiCards() {
 
   requestAnimationFrame(() => {
     grid.querySelectorAll('.kpi-bar-fill').forEach(bar => {
-      bar.style.width = bar.dataset.width + '%';
+      bar.style.transform = 'scaleX(' + Math.min(parseFloat(bar.dataset.width), 100) / 100 + ')';
     });
   });
 }
@@ -377,7 +377,7 @@ function renderForecastKpiCards() {
 
   requestAnimationFrame(() => {
     grid.querySelectorAll('.kpi-bar-fill').forEach(bar => {
-      bar.style.width = bar.dataset.width + '%';
+      bar.style.transform = 'scaleX(' + Math.min(parseFloat(bar.dataset.width), 100) / 100 + ')';
     });
   });
 }

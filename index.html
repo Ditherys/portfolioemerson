@@ -6,7 +6,7 @@
     <title>Supply Chain S&OP Dashboard | Dither Reyes Global Solutions</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="icon" type="image/png" href="./drlogo_favicon.png" />
     <link rel="stylesheet" href="./style.css" />
@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="header-sub-strip">
-            <span class="header-sub-text"><strong>Dither Reyes</strong> — Supply chain professional demonstrating <strong>S&amp;OP analytics</strong>, inventory management, and BI capabilities for a Senior Supply Chain Analyst role. This simulates a 12-month FY 2024 F&amp;B supply chain with forecast accuracy, DOS, and delivery KPIs.</span>
+            <span class="header-sub-text"><strong>Dither Reyes</strong> · Supply chain professional demonstrating <strong>S&amp;OP analytics</strong>, inventory management, and BI capabilities for a Senior Supply Chain Analyst role. 12-month FY 2024 F&amp;B simulation covering forecast accuracy, DOS, and delivery KPIs.</span>
             <div class="header-contact">
               <a href="https://www.linkedin.com/in/dither-reyes-543273381/" target="_blank" rel="noopener" class="header-contact-link">
                 <img src="./LinkedIn_logo_initials.png" alt="LinkedIn" /> LinkedIn
@@ -48,11 +48,11 @@
             </div>
           </div>
           <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
-            <button class="tab-btn is-active" data-tab="overview"  role="tab" aria-selected="true"  type="button">Overview</button>
-            <button class="tab-btn"           data-tab="inventory" role="tab" aria-selected="false" type="button">Inventory</button>
-            <button class="tab-btn"           data-tab="forecast"  role="tab" aria-selected="false" type="button">Forecast</button>
-            <button class="tab-btn"           data-tab="sop"       role="tab" aria-selected="false" type="button">S&amp;OP</button>
-            <button class="tab-btn"           data-tab="shipments" role="tab" aria-selected="false" type="button">Shipments</button>
+            <button class="tab-btn is-active" id="tab-btn-overview"  data-tab="overview"  role="tab" aria-selected="true"  aria-controls="tab-overview"  type="button">Overview</button>
+            <button class="tab-btn"           id="tab-btn-inventory" data-tab="inventory" role="tab" aria-selected="false" aria-controls="tab-inventory" type="button">Inventory</button>
+            <button class="tab-btn"           id="tab-btn-forecast"  data-tab="forecast"  role="tab" aria-selected="false" aria-controls="tab-forecast"  type="button">Forecast</button>
+            <button class="tab-btn"           id="tab-btn-sop"       data-tab="sop"       role="tab" aria-selected="false" aria-controls="tab-sop"       type="button">S&amp;OP</button>
+            <button class="tab-btn"           id="tab-btn-shipments" data-tab="shipments" role="tab" aria-selected="false" aria-controls="tab-shipments" type="button">Shipments</button>
           </nav>
         </header>
 
@@ -71,12 +71,12 @@
         <section class="kpi-grid" id="kpiGrid" aria-label="Key performance indicators"></section>
 
         <!-- ══ OVERVIEW TAB ══ -->
-        <div class="tab-pane is-active" id="tab-overview" role="tabpanel">
+        <div class="tab-pane is-active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview">
+          <h2 class="sr-only">Overview</h2>
           <div class="chart-row">
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Trend View</p>
                   <h3>Forecast Accuracy Trend — All Families</h3>
                   <p class="chart-note">Monthly FA (%) by product family vs. 85% target · Jan–Dec 2024</p>
                 </div>
@@ -89,7 +89,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Supply Plan</p>
                   <h3>Demand vs. Supply Plan</h3>
                   <p class="chart-note">Monthly demand plan vs. actual shipments (units '000s)</p>
                 </div>
@@ -100,7 +99,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Delivery</p>
                   <h3>On-Time Delivery &amp; Fill Rate</h3>
                   <p class="chart-note">Monthly OTD and fill rate (%) vs. 95% target</p>
                 </div>
@@ -113,7 +111,6 @@
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">S&amp;OP Scorecard</p>
                   <h3>Monthly S&amp;OP Performance Heatmap</h3>
                   <p class="chart-note">Green = at/above target · Yellow = within 5% of target · Red = below target</p>
                 </div>
@@ -124,14 +121,14 @@
         </div>
 
         <!-- ══ INVENTORY TAB ══ -->
-        <div class="tab-pane hidden" id="tab-inventory" role="tabpanel">
+        <div class="tab-pane hidden" id="tab-inventory" role="tabpanel" aria-labelledby="tab-btn-inventory">
+          <h2 class="sr-only">Inventory</h2>
           <div class="chart-row chart-row-2">
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Days of Supply</p>
                   <h3>DOS Trend by Product Family</h3>
-                  <p class="chart-note">Monthly days of supply per family — target ≤ 45 days</p>
+                  <p class="chart-note">Monthly days of supply per family, target ≤ 45 days</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="dosChart"></canvas></div>
@@ -140,7 +137,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Inventory Value</p>
                   <h3>Inventory Value by Family ($M)</h3>
                   <p class="chart-note">Monthly inventory value stacked by product family</p>
                 </div>
@@ -153,7 +149,6 @@
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Top 30 Inventory Report</p>
                   <h3>Top 30 SKUs by Inventory Value at Risk</h3>
                   <p class="chart-note">Ranked by value on-hand · flagged by days-of-supply risk threshold</p>
                 </div>
@@ -182,16 +177,16 @@
         </div>
 
         <!-- ══ FORECAST TAB ══ -->
-        <div class="tab-pane hidden" id="tab-forecast" role="tabpanel">
+        <div class="tab-pane hidden" id="tab-forecast" role="tabpanel" aria-labelledby="tab-btn-forecast">
+          <h2 class="sr-only">Forecast</h2>
           <section class="kpi-grid" id="forecastKpiGrid" aria-label="Forecast accuracy KPIs"></section>
 
           <div class="chart-row chart-row-2">
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Trend</p>
                   <h3>Forecast Accuracy by Family</h3>
-                  <p class="chart-note">Monthly FA (%) per product family — target: 85%</p>
+                  <p class="chart-note">Monthly FA (%) per product family, target 85%</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="faFamilyChart"></canvas></div>
@@ -200,7 +195,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Current Month</p>
                   <h3>December FA vs. Target</h3>
                   <p class="chart-note">December 2024 forecast accuracy vs. 85% target per family</p>
                 </div>
@@ -213,7 +207,6 @@
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Miss Analysis</p>
                   <h3>Top Forecast Misses — FY 2024</h3>
                   <p class="chart-note">Largest forecast variances requiring root cause analysis and corrective action</p>
                 </div>
@@ -241,12 +234,12 @@
         </div>
 
         <!-- ══ S&OP TAB ══ -->
-        <div class="tab-pane hidden" id="tab-sop" role="tabpanel">
+        <div class="tab-pane hidden" id="tab-sop" role="tabpanel" aria-labelledby="tab-btn-sop">
+          <h2 class="sr-only">S&amp;OP</h2>
           <div class="chart-row">
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Supply &amp; Demand Alignment</p>
                   <h3>Demand Plan vs. Actual Shipments</h3>
                   <p class="chart-note">Monthly plan vs. actual (units '000s) with variance % overlay</p>
                 </div>
@@ -259,9 +252,8 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Inventory Health</p>
                   <h3>Overall DOS Trend</h3>
-                  <p class="chart-note">Composite days of supply vs. 45-day target — downward = improvement</p>
+                  <p class="chart-note">Composite days of supply vs. 45-day target. Downward = improvement.</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="sopDosChart"></canvas></div>
@@ -270,7 +262,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Turnover Rate</p>
                   <h3>Inventory Turnover by Family</h3>
                   <p class="chart-note">Annualized turnover rate per family — target: ≥ 6.0×</p>
                 </div>
@@ -283,7 +274,6 @@
             <article class="chart-card card-full">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">S&amp;OP Scorecard</p>
                   <h3>Full-Year S&amp;OP Performance Scorecard</h3>
                   <p class="chart-note">Green = at/above target · Yellow = within 5% · Red = below target</p>
                 </div>
@@ -294,12 +284,12 @@
         </div>
 
         <!-- ══ SHIPMENTS TAB ══ -->
-        <div class="tab-pane hidden" id="tab-shipments" role="tabpanel">
+        <div class="tab-pane hidden" id="tab-shipments" role="tabpanel" aria-labelledby="tab-btn-shipments">
+          <h2 class="sr-only">Shipments</h2>
           <div class="chart-row chart-row-2">
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Delivery Performance</p>
                   <h3>On-Time Delivery Trend</h3>
                   <p class="chart-note">Monthly OTD (%) vs. 95% target</p>
                 </div>
@@ -310,7 +300,6 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Order Fill</p>
                   <h3>Fill Rate Trend</h3>
                   <p class="chart-note">Monthly fill rate (%) vs. 95% target</p>
                 </div>
@@ -323,9 +312,8 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Open Orders</p>
                   <h3>Open Orders Volume Trend</h3>
-                  <p class="chart-note">Monthly open order count — declining trend = healthier pipeline</p>
+                  <p class="chart-note">Monthly open order count. Declining trend = healthier pipeline.</p>
                 </div>
               </div>
               <div class="chart-wrap"><canvas id="openOrdersChart"></canvas></div>
@@ -334,8 +322,7 @@
             <article class="chart-card">
               <div class="chart-header">
                 <div>
-                  <p class="eyebrow">Current Month · Dec 2024</p>
-                  <h3>Shipment Status Breakdown</h3>
+                  <h3>Shipment Status Breakdown — Dec 2024</h3>
                   <p class="chart-note">On-time, early, and late shipments for December 2024</p>
                 </div>
               </div>
