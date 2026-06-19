@@ -8,6 +8,18 @@ export default async function handler(req, res) {
   if (!message || typeof message !== 'string') {
     return res.status(400).json({ error: 'message is required' });
   }
+  if (message.length > 1000) {
+    return res.status(400).json({ error: 'Message too long. Please keep questions under 1000 characters.' });
+  }
+
+  // Only trust user/assistant turns from the client. Discard anything else
+  // (notably injected "system" roles) so the guardrails above can't be
+  // overridden through the conversation history.
+  const safeHistory = Array.isArray(history)
+    ? history
+        .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+        .slice(-8)
+    : [];
 
   const apiKey = process.env.GROK_API_KEY || process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -129,7 +141,7 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
 
   const messages = [
     { role: 'system', content: SYSTEM_PROMPT },
-    ...(Array.isArray(history) ? history.slice(-8) : []),
+    ...safeHistory,
     { role: 'user', content: message },
   ];
 
@@ -143,7 +155,7 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages,
-        max_tokens: 300,
+        max_tokens: 700,
         temperature: 0.2,
       }),
     });
