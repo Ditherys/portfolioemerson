@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'message is required' });
   }
 
-  const apiKey = process.env.GROK_API_KEY;
+  const apiKey = process.env.GROK_API_KEY || process.env.GROQ_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'AI service is not configured' });
   }
@@ -66,14 +66,14 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
   ];
 
   try {
-    const grokRes = await fetch('https://api.x.ai/v1/chat/completions', {
+    const grokRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'grok-3-mini',
+        model: 'llama-3.3-70b-versatile',
         messages,
         max_tokens: 300,
         temperature: 0.2,
