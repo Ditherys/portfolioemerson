@@ -162,6 +162,12 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
 
     if (!grokRes.ok) {
       const text = await grokRes.text();
+      // 429 = rate limit. Show a friendly, on-brand message instead of a raw error.
+      if (grokRes.status === 429) {
+        return res.status(429).json({
+          reply: "I'm getting a lot of questions right now and hit a brief rate limit. Please wait about a minute, then ask again.",
+        });
+      }
       return res.status(grokRes.status).json({ error: 'AI service error', detail: text });
     }
 
