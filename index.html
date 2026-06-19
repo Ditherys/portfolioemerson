@@ -418,6 +418,14 @@
 
       sendBtn.addEventListener('click', send);
 
+      function formatMessage(text) {
+        var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        return safe
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n\n+/g, '<br><br>')
+          .replace(/\n/g, '<br>');
+      }
+
       function addMsg(role, text, loading) {
         var wrap   = document.createElement('div');
         wrap.className = 'chat-msg ' + role;
@@ -446,7 +454,7 @@
           .then(function (r) { return r.json(); })
           .then(function (d) {
             var reply = d.reply || d.error || 'No response.';
-            loadingBubble.textContent = reply;
+            loadingBubble.innerHTML = formatMessage(reply);
             loadingBubble.classList.remove('loading');
             history.push({ role: 'user', content: text });
             history.push({ role: 'assistant', content: reply });
