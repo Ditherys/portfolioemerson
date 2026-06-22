@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         .slice(-8)
     : [];
 
-  const apiKey = process.env.GROK_API_KEY || process.env.GROQ_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'AI service is not configured' });
   }
@@ -146,32 +146,32 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
   ];
 
   try {
-    const grokRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const aiRes = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'gemini-2.5-flash',
         messages,
         max_tokens: 700,
         temperature: 0.2,
       }),
     });
 
-    if (!grokRes.ok) {
-      const text = await grokRes.text();
+    if (!aiRes.ok) {
+      const text = await aiRes.text();
       // 429 = rate limit. Show a friendly, on-brand message instead of a raw error.
-      if (grokRes.status === 429) {
+      if (aiRes.status === 429) {
         return res.status(429).json({
           reply: "I'm getting a lot of questions right now and hit a brief rate limit. Please wait about a minute, then ask again.",
         });
       }
-      return res.status(grokRes.status).json({ error: 'AI service error', detail: text });
+      return res.status(aiRes.status).json({ error: 'AI service error', detail: text });
     }
 
-    const json = await grokRes.json();
+    const json = await aiRes.json();
     const reply = json.choices?.[0]?.message?.content ?? 'No response received.';
     return res.status(200).json({ reply });
   } catch (err) {
