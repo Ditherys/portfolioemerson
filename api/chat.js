@@ -145,35 +145,61 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
     { role: 'user', content: message },
   ];
 
-  try {
-    const aiRes = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
+  // Gemini's free tier intermittently returns 503 (model overloaded) or 429
+  // (rate limit). Both are transient, so we retry with a short backoff and fall
+  // back from the higher-quality flash model to the higher-availability
+  // flash-lite model before giving up. The two models rarely fail at the same
+  // moment, so this makes a successful answer overwhelmingly likely.
+  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  function askGemini(model) {
+    return fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: 'gemini-2.5-flash',
-        messages,
-        max_tokens: 700,
-        temperature: 0.2,
-      }),
+      body: JSON.stringify({ model, messages, max_tokens: 700, temperature: 0.2 }),
     });
+  }
 
-    if (!aiRes.ok) {
-      const text = await aiRes.text();
-      // 429 = rate limit. Show a friendly, on-brand message instead of a raw error.
-      if (aiRes.status === 429) {
-        return res.status(429).json({
-          reply: "I'm getting a lot of questions right now and hit a brief rate limit. Please wait about a minute, then ask again.",
-        });
+  try {
+    let lastStatus = 0;
+    let lastDetail = '';
+
+    for (const model of MODELS) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const aiRes = await askGemini(model);
+
+        if (aiRes.ok) {
+          const json = await aiRes.json();
+          const reply = json.choices?.[0]?.message?.content ?? 'No response received.';
+          return res.status(200).json({ reply });
+        }
+
+        lastStatus = aiRes.status;
+        lastDetail = await aiRes.text();
+
+        // 503 (overloaded) and 429 (rate limit) are transient → back off, retry,
+        // then fall through to the next model. Anything else is a real error.
+        if (aiRes.status === 503 || aiRes.status === 429) {
+          await sleep(500 * (attempt + 1));
+          continue;
+        }
+        return res.status(aiRes.status).json({ error: 'AI service error', detail: lastDetail });
       }
-      return res.status(aiRes.status).json({ error: 'AI service error', detail: text });
     }
 
-    const json = await aiRes.json();
-    const reply = json.choices?.[0]?.message?.content ?? 'No response received.';
-    return res.status(200).json({ reply });
+    // Every model + retry was exhausted — give a friendly, on-brand message.
+    if (lastStatus === 429) {
+      return res.status(429).json({
+        reply: "I'm getting a lot of questions right now and hit a brief rate limit. Please wait about a minute, then try again.",
+      });
+    }
+    return res.status(503).json({
+      reply: "I'm experiencing high demand right now and couldn't pull a response. Please try again in a few seconds.",
+    });
   } catch (err) {
     return res.status(500).json({ error: 'Request failed', detail: err.message });
   }
