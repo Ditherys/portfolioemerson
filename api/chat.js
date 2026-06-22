@@ -21,8 +21,9 @@ export default async function handler(req, res) {
         .slice(-8)
     : [];
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const geminiKey = process.env.GEMINI_API_KEY;
+  const groqKey = process.env.GROK_API_KEY || process.env.GROQ_API_KEY;
+  if (!geminiKey && !groqKey) {
     return res.status(500).json({ error: 'AI service is not configured' });
   }
 
@@ -145,22 +146,32 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
     { role: 'user', content: message },
   ];
 
-  // Gemini's free tier intermittently returns 503 (model overloaded) or 429
-  // (rate limit). Both are transient, so we retry with a short backoff and fall
-  // back from the higher-quality flash model to the higher-availability
-  // flash-lite model before giving up. The two models rarely fail at the same
-  // moment, so this makes a successful answer overwhelmingly likely.
-  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+  // Both Gemini and Groq free tiers intermittently return 503 (model overloaded)
+  // or 429 (rate limit). To stay reliable we use a provider chain across TWO
+  // independent platforms — Gemini (flash, then the higher-availability
+  // flash-lite) and Groq (Llama 3.3). They run on separate infrastructure and
+  // are almost never congested at the same moment, so a successful answer is
+  // overwhelmingly likely. Within each model we also retry once on a transient
+  // error with a short backoff.
+  const PROVIDERS = [];
+  if (geminiKey) {
+    PROVIDERS.push({ url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', key: geminiKey, model: 'gemini-2.5-flash' });
+    PROVIDERS.push({ url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', key: geminiKey, model: 'gemini-2.5-flash-lite' });
+  }
+  if (groqKey) {
+    PROVIDERS.push({ url: 'https://api.groq.com/openai/v1/chat/completions', key: groqKey, model: 'llama-3.3-70b-versatile' });
+  }
+
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  function askGemini(model) {
-    return fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
+  function ask(provider) {
+    return fetch(provider.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${provider.key}`,
       },
-      body: JSON.stringify({ model, messages, max_tokens: 700, temperature: 0.2 }),
+      body: JSON.stringify({ model: provider.model, messages, max_tokens: 700, temperature: 0.2 }),
     });
   }
 
@@ -168,9 +179,9 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
     let lastStatus = 0;
     let lastDetail = '';
 
-    for (const model of MODELS) {
+    for (const provider of PROVIDERS) {
       for (let attempt = 0; attempt < 2; attempt++) {
-        const aiRes = await askGemini(model);
+        const aiRes = await ask(provider);
 
         if (aiRes.ok) {
           const json = await aiRes.json();
@@ -182,16 +193,17 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
         lastDetail = await aiRes.text();
 
         // 503 (overloaded) and 429 (rate limit) are transient → back off, retry,
-        // then fall through to the next model. Anything else is a real error.
+        // then fall through to the next provider. Anything else is a real error,
+        // but we still move on to the next provider rather than fail outright.
         if (aiRes.status === 503 || aiRes.status === 429) {
-          await sleep(500 * (attempt + 1));
+          await sleep(400 * (attempt + 1));
           continue;
         }
-        return res.status(aiRes.status).json({ error: 'AI service error', detail: lastDetail });
+        break;
       }
     }
 
-    // Every model + retry was exhausted — give a friendly, on-brand message.
+    // Every provider + retry was exhausted — give a friendly, on-brand message.
     if (lastStatus === 429) {
       return res.status(429).json({
         reply: "I'm getting a lot of questions right now and hit a brief rate limit. Please wait about a minute, then try again.",
@@ -199,6 +211,7 @@ Be concise and analytical. Use specific data points. Keep responses under 150 wo
     }
     return res.status(503).json({
       reply: "I'm experiencing high demand right now and couldn't pull a response. Please try again in a few seconds.",
+      detail: lastDetail || undefined,
     });
   } catch (err) {
     return res.status(500).json({ error: 'Request failed', detail: err.message });
